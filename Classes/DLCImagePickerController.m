@@ -11,6 +11,15 @@
 
 #define kStaticBlurSize 2.0f
 
+@interface DLCImagePickerController ()
+
+@property (strong, nonatomic) IBOutlet UIButton *button1;
+@property (strong, nonatomic) IBOutlet UIButton *button2;
+@property (strong, nonatomic) IBOutlet UIButton *button3;
+@property (strong, nonatomic) IBOutlet UIButton *buttonCamera;
+
+@end
+
 @implementation DLCImagePickerController {
     BOOL isStatic;
     BOOL hasBlur;
@@ -44,10 +53,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.wantsFullScreenLayout = YES;
-    //set background color
-    self.view.backgroundColor = [UIColor colorWithPatternImage:
-                                 [UIImage imageNamed:@"micro_carbon"]];
+//    self.wantsFullScreenLayout = YES;
     
     //button states
     [self.blurToggleButton setSelected:NO];
@@ -61,13 +67,28 @@
     
     self.filterScrollView.alpha = 0.0f;
     
-    self.blurOverlayView = [[BlurOverlayView alloc] initWithFrame:CGRectMake(0, 0,
-                                                                         self.imageView.frame.size.width,
-                                                                         self.imageView.frame.size.height)];
+    self.blurOverlayView = [[BlurOverlayView alloc] initWithFrame:CGRectMake(0, 0,self.imageView.frame.size.width,self.imageView.frame.size.height)];
     self.blurOverlayView.alpha = 0;
     [self.imageView addSubview:self.blurOverlayView];
     
     hasBlur = NO;
+    
+    self.button1.hidden = TRUE;
+    self.button1.selected = NO;
+    [self.button1 srWhiteActionButtonStyle];
+    
+    self.button2.hidden = TRUE;
+    self.button2.selected = NO;
+    [self.button2 srWhiteActionButtonStyle];
+    
+    self.button3.hidden = TRUE;
+    self.button3.selected = NO;
+    [self.button3 srWhiteActionButtonStyle];
+    
+    self.buttonCamera.hidden = TRUE;
+    self.buttonCamera.selected = NO;
+    self.buttonCamera.enabled = NO;
+    [self.buttonCamera srWhiteActionButtonStyle];
     
     [self loadFilters];
     
@@ -84,6 +105,77 @@
 -(void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 }
+
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    /* perform capture countdown */
+    [self performBlock:^{
+        /* Countdown */
+        [self countdownForIndex:1];
+    } afterDelay:1.0f];
+}
+
+#pragma mark - Countdown
+
+- (void)countdownForIndex:(NSUInteger)index {
+    
+    switch (index) {
+        case 1: {
+            
+            self.button1.hidden = NO;
+            
+            /* countdown to two */
+            [self performBlock:^{
+                [self countdownForIndex:(index + 1)];
+            } afterDelay:1.0f];
+            
+            break;
+        }
+        case 2: {
+            
+            self.button1.selected = TRUE;
+            self.button2.hidden = NO;
+            
+            /* countdown to two */
+            [self performBlock:^{
+                [self countdownForIndex:(index + 1)];
+            } afterDelay:1.0f];
+            
+            break;
+        }
+        case 3: {
+            
+            self.button2.selected = TRUE;
+            self.button3.hidden = NO;
+            
+            /* countdown to two */
+            [self performBlock:^{
+                
+                /* hide buttons */
+                self.button1.hidden = TRUE;
+                self.button2.hidden = TRUE;
+                self.button3.hidden = TRUE;
+                
+                /* Show camera */
+                self.buttonCamera.hidden = NO;
+                
+                /* Take image */
+                [self takePhoto:nil];
+                
+            } afterDelay:1.0f];
+            
+            break;
+        }
+            
+        default:
+            /*
+              Final call */
+            break;
+    }
+}
+
+#pragma mark - Filters
 
 -(void) loadFilters {
     for(int i = 0; i < 10; i++) {
@@ -191,7 +283,10 @@
         } break;
         case 9: {
             filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"purple-green"];
-        } break;
+        }
+        case 10: {
+            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"retro_filter"];
+        }  break;
         default:
             filter = [[GPUImageFilter alloc] init];
             break;
@@ -295,6 +390,8 @@
     [self presentViewController:imagePickerController animated:YES completion:NULL];
 }
 
+#pragma mark - Actions;
+
 -(IBAction)toggleFlash:(UIButton *)button{
     [button setSelected:!button.selected];
 }
@@ -367,7 +464,7 @@
     
     [self prepareFilter];
     [self.retakeButton setHidden:NO];
-    [self.photoCaptureButton setTitle:@"Done" forState:UIControlStateNormal];
+    [self.photoCaptureButton setTitle:@"Klaar" forState:UIControlStateNormal];
     [self.photoCaptureButton setImage:nil forState:UIControlStateNormal];
     [self.photoCaptureButton setEnabled:YES];
     if(![self.filtersToggleButton isSelected]){
@@ -385,6 +482,12 @@
         [self.cameraToggleButton setEnabled:NO];
         [self.flashToggleButton setEnabled:NO];
         [self prepareForCapture];
+        
+        /* change camera button to done */
+        [self.buttonCamera setImage:nil forState:UIControlStateNormal];
+        [self.buttonCamera setTitle:@"Klaar" forState:UIControlStateNormal];
+        [self.buttonCamera srWhiteActionButtonStyle];
+        [self.buttonCamera setEnabled:YES];
         
     } else {
         
@@ -436,6 +539,8 @@
 -(IBAction) cancel:(id)sender {
     [self.delegate imagePickerControllerDidCancel:self];
 }
+
+#pragma mark - Finger actions
 
 -(IBAction) handlePan:(UIGestureRecognizer *) sender {
     if (hasBlur) {
@@ -538,6 +643,8 @@
     }
 }
 
+#pragma mark - Filter animations
+
 -(void) showFilters {
     [self.filtersToggleButton setSelected:YES];
     self.filtersToggleButton.enabled = NO;
@@ -609,6 +716,8 @@
     }];
 }
 
+#pragma mark - Clean out
+
 -(void) dealloc {
     [self removeAllTargets];
     stillCamera = nil;
@@ -642,7 +751,7 @@
         [self.cameraToggleButton setEnabled:NO];
         [self.flashToggleButton setEnabled:NO];
         [self prepareStaticFilter];
-        [self.photoCaptureButton setTitle:@"Done" forState:UIControlStateNormal];
+        [self.photoCaptureButton setTitle:@"Klaar" forState:UIControlStateNormal];
         [self.photoCaptureButton setImage:nil forState:UIControlStateNormal];
         [self.photoCaptureButton setEnabled:YES];
         if(![self.filtersToggleButton isSelected]){
@@ -671,4 +780,11 @@
 
 #endif
 
+- (void)viewDidUnload {
+    [self setButton1:nil];
+    [self setButton2:nil];
+    [self setButton3:nil];
+    [self setButtonCamera:nil];
+    [super viewDidUnload];
+}
 @end
