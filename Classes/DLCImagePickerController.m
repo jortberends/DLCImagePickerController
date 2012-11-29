@@ -88,7 +88,6 @@
 }
 
 -(void) viewWillAppear:(BOOL)animated {
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
     [super viewWillAppear:animated];
 }
 
@@ -650,7 +649,6 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [stillCamera stopCameraCapture];
     [super viewWillDisappear:animated];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:NO];
 }
 
 #pragma mark - UIImagePickerDelegate
