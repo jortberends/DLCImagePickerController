@@ -28,9 +28,6 @@
     filtersToggleButton,
     libraryToggleButton,
     filterScrollView,
-    filtersBackgroundImageView,
-    photoBar,
-    topBar,
     blurOverlayView,
     outputJPEGQuality;
 
@@ -52,10 +49,6 @@
     self.view.backgroundColor = [UIColor colorWithPatternImage:
                                  [UIImage imageNamed:@"micro_carbon"]];
     
-    self.photoBar.backgroundColor = [UIColor colorWithPatternImage:
-                                     [UIImage imageNamed:@"photo_bar"]];
-    
-    self.topBar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"photo_bar"]];
     //button states
     [self.blurToggleButton setSelected:NO];
     [self.filtersToggleButton setSelected:NO];
@@ -66,6 +59,7 @@
 	[self.view addSubview:self.focusView];
 	self.focusView.alpha = 0;
     
+    self.filterScrollView.alpha = 0.0f;
     
     self.blurOverlayView = [[BlurOverlayView alloc] initWithFrame:CGRectMake(0, 0,
                                                                          self.imageView.frame.size.width,
@@ -547,23 +541,13 @@
 -(void) showFilters {
     [self.filtersToggleButton setSelected:YES];
     self.filtersToggleButton.enabled = NO;
-    CGRect imageRect = self.imageView.frame;
-    imageRect.origin.y -= 34;
-    CGRect sliderScrollFrame = self.filterScrollView.frame;
-    sliderScrollFrame.origin.y -= self.filterScrollView.frame.size.height;
-    CGRect sliderScrollFrameBackground = self.filtersBackgroundImageView.frame;
-    sliderScrollFrameBackground.origin.y -=
-    self.filtersBackgroundImageView.frame.size.height-3;
-    
-    self.filterScrollView.hidden = NO;
-    self.filtersBackgroundImageView.hidden = NO;
+        
     [UIView animateWithDuration:0.10
                           delay:0.05
                         options: UIViewAnimationCurveEaseOut
                      animations:^{
-                         self.imageView.frame = imageRect;
-                         self.filterScrollView.frame = sliderScrollFrame;
-                         self.filtersBackgroundImageView.frame = sliderScrollFrameBackground;
+                                                  
+                         self.filterScrollView.alpha = 1.0f;
                      } 
                      completion:^(BOOL finished){
                          self.filtersToggleButton.enabled = YES;
@@ -572,27 +556,17 @@
 
 -(void) hideFilters {
     [self.filtersToggleButton setSelected:NO];
-    CGRect imageRect = self.imageView.frame;
-    imageRect.origin.y += 34;
-    CGRect sliderScrollFrame = self.filterScrollView.frame;
-    sliderScrollFrame.origin.y += self.filterScrollView.frame.size.height;
-    
-    CGRect sliderScrollFrameBackground = self.filtersBackgroundImageView.frame;
-    sliderScrollFrameBackground.origin.y += self.filtersBackgroundImageView.frame.size.height-3;
-    
+        
     [UIView animateWithDuration:0.10
                           delay:0.05
                         options: UIViewAnimationCurveEaseOut
                      animations:^{
-                         self.imageView.frame = imageRect;
-                         self.filterScrollView.frame = sliderScrollFrame;
-                         self.filtersBackgroundImageView.frame = sliderScrollFrameBackground;
+                         
+                         self.filterScrollView.alpha = 0.0f;
                      } 
                      completion:^(BOOL finished){
                          
                          self.filtersToggleButton.enabled = YES;
-                         self.filterScrollView.hidden = YES;
-                         self.filtersBackgroundImageView.hidden = YES;
                      }];
 }
 

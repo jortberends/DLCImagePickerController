@@ -41,9 +41,6 @@
 @property (nonatomic, weak) IBOutlet UIButton *retakeButton;
 
 @property (nonatomic, weak) IBOutlet UIScrollView *filterScrollView;
-@property (nonatomic, weak) IBOutlet UIImageView *filtersBackgroundImageView;
-@property (nonatomic, weak) IBOutlet UIView *photoBar;
-@property (nonatomic, weak) IBOutlet UIView *topBar;
 @property (nonatomic, strong) BlurOverlayView *blurOverlayView;
 @property (nonatomic, strong) UIImageView *focusView;
 
