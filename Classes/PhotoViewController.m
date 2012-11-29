@@ -33,7 +33,7 @@
     
     showPickerButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     showPickerButton.frame = CGRectMake(round(mainScreenFrame.size.width / 2.0 - 150.0 / 2.0), mainScreenFrame.size.height - 90.0, 150.0, 40.0);
-    [showPickerButton setTitle:@"Show picker" forState:UIControlStateNormal];
+    [showPickerButton setTitle:@"SAMPLE PICKER" forState:UIControlStateNormal];
 	showPickerButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     [showPickerButton addTarget:self action:@selector(takePhoto:) forControlEvents:UIControlEventTouchUpInside];
     [showPickerButton setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
