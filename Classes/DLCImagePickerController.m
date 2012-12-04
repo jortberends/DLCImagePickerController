@@ -109,11 +109,27 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    /* perform capture countdown */
-    [self performBlock:^{
-        /* Countdown */
-        [self countdownForIndex:1];
-    } afterDelay:1.0f];
+    /* perform capture countdown, only if camera is available */
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        [self performBlock:^{
+            /* Countdown */
+            [self countdownForIndex:1];
+        } afterDelay:1.0f];
+    } else {
+
+        /* hide buttons */
+        self.button1.hidden = TRUE;
+        self.button2.hidden = TRUE;
+        self.button3.hidden = TRUE;
+        
+        /* Show camera */
+        self.buttonCamera.hidden = NO;
+        [self.buttonCamera setImage:nil forState:UIControlStateNormal];
+        [self.buttonCamera setTitle:@"Klaar" forState:UIControlStateNormal];
+        [self.buttonCamera srWhiteActionButtonStyle];
+        [self.buttonCamera setEnabled:YES];
+        
+    }
 }
 
 #pragma mark - Countdown
