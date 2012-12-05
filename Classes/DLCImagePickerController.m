@@ -194,9 +194,9 @@
 #pragma mark - Filters
 
 -(void) loadFilters {
-    for(int i = 0; i < 10; i++) {
+    for(int i = 0; i < 7; i++) {
         UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", i + 1]] forState:UIControlStateNormal];
+        [button setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"filter_%d.png", i]] forState:UIControlStateNormal];
         button.frame = CGRectMake(10+i*(60+10), 5.0f, 60.0f, 60.0f);
         button.layer.cornerRadius = 7.0f;
         
@@ -217,13 +217,12 @@
                    action:@selector(filterClicked:)
          forControlEvents:UIControlEventTouchUpInside];
         button.tag = i;
-        [button setTitle:@"*" forState:UIControlStateSelected];
         if(i == 0){
             [button setSelected:YES];
         }
 		[self.filterScrollView addSubview:button];
 	}
-	[self.filterScrollView setContentSize:CGSizeMake(10 + 10*(60+10), 75.0)];
+	[self.filterScrollView setContentSize:CGSizeMake(10 + 7*(60+10), 75.0)];
 }
 
 
@@ -271,42 +270,34 @@
 
 
 -(void) setFilter:(int) index {
+    
     switch (index) {
-        case 1:{
-            filter = [[GPUImageContrastFilter alloc] init];
-            [(GPUImageContrastFilter *) filter setContrast:1.75];
+        case 0:{
+            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"coolboost"];
+        } break;
+        case 1: {
+            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"Cross_process"];
         } break;
         case 2: {
-            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"crossprocess"];
+            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"curves02"];
         } break;
         case 3: {
-            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"02"];
+            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"nostalgia"];
         } break;
         case 4: {
-            filter = [[GrayscaleContrastFilter alloc] init];
+            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"sad"];
         } break;
         case 5: {
-            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"17"];
+            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"savannah"];
         } break;
         case 6: {
-            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"aqua"];
-        } break;
-        case 7: {
-            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"yellow-red"];
-        } break;
-        case 8: {
-            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"06"];
-        } break;
-        case 9: {
-            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"purple-green"];
-        }
-        case 10: {
-            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"retro_filter"];
+            filter = [[GrayscaleContrastFilter alloc] init];
         }  break;
         default:
             filter = [[GPUImageFilter alloc] init];
             break;
     }
+    
 }
 
 -(void) prepareFilter {    
