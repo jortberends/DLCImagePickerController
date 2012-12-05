@@ -55,7 +55,7 @@
 					</object>
 					<object class="IBUIView" id="780689577">
 						<reference key="NSNextResponder" ref="430809117"/>
-						<int key="NSvFlags">301</int>
+						<int key="NSvFlags">293</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{0, 80}, {320, 320}}</string>
 						<reference key="NSSuperview" ref="430809117"/>
@@ -109,11 +109,11 @@
 						</object>
 						<object class="NSCustomResource" key="IBUISelectedImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">filter-close.png</string>
+							<string key="NSResourceName">filter-open.png</string>
 						</object>
 						<object class="NSCustomResource" key="IBUINormalImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">filter-open.png</string>
+							<string key="NSResourceName">filter-close.png</string>
 						</object>
 						<object class="IBUIFontDescription" key="IBUIFontDescription" id="731209349">
 							<int key="type">2</int>
