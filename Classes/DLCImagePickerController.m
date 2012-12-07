@@ -125,7 +125,7 @@
         /* Show camera */
         self.buttonCamera.hidden = NO;
         [self.buttonCamera setImage:nil forState:UIControlStateNormal];
-        [self.buttonCamera setTitle:@"Done" forState:UIControlStateNormal];
+        [self.buttonCamera setTitle:@"done" forState:UIControlStateNormal];
         [self.buttonCamera srWhiteActionButtonStyle];
         [self.buttonCamera setEnabled:YES];
         
@@ -471,7 +471,7 @@
     
     [self prepareFilter];
     [self.retakeButton setHidden:NO];
-    [self.photoCaptureButton setTitle:@"Done" forState:UIControlStateNormal];
+    [self.photoCaptureButton setTitle:@"done" forState:UIControlStateNormal];
     [self.photoCaptureButton setImage:nil forState:UIControlStateNormal];
     [self.photoCaptureButton setEnabled:YES];
     if(![self.filtersToggleButton isSelected]){
@@ -492,7 +492,7 @@
         
         /* change camera button to done */
         [self.buttonCamera setImage:nil forState:UIControlStateNormal];
-        [self.buttonCamera setTitle:@"Done" forState:UIControlStateNormal];
+        [self.buttonCamera setTitle:@"done" forState:UIControlStateNormal];
         [self.buttonCamera srWhiteActionButtonStyle];
         [self.buttonCamera setEnabled:YES];
         
@@ -758,7 +758,7 @@
         [self.cameraToggleButton setEnabled:NO];
         [self.flashToggleButton setEnabled:NO];
         [self prepareStaticFilter];
-        [self.photoCaptureButton setTitle:@"Done" forState:UIControlStateNormal];
+        [self.photoCaptureButton setTitle:@"done" forState:UIControlStateNormal];
         [self.photoCaptureButton setImage:nil forState:UIControlStateNormal];
         [self.photoCaptureButton setEnabled:YES];
         if(![self.filtersToggleButton isSelected]){
