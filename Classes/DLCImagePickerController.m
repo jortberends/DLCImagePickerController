@@ -114,7 +114,7 @@
         [self performBlock:^{
             /* Countdown */
             [self countdownForIndex:1];
-        } afterDelay:1.0f];
+        } afterDelay:1.5f];
     } else {
 
         /* hide buttons */
@@ -144,7 +144,7 @@
             /* countdown to two */
             [self performBlock:^{
                 [self countdownForIndex:(index + 1)];
-            } afterDelay:1.0f];
+            } afterDelay:2.0f];
             
             break;
         }
@@ -156,7 +156,7 @@
             /* countdown to two */
             [self performBlock:^{
                 [self countdownForIndex:(index + 1)];
-            } afterDelay:1.0f];
+            } afterDelay:2.0f];
             
             break;
         }
@@ -179,7 +179,7 @@
                 /* Take image */
                 [self takePhoto:nil];
                 
-            } afterDelay:1.0f];
+            } afterDelay:2.0f];
             
             break;
         }
