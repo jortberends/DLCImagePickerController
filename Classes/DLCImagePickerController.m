@@ -283,7 +283,7 @@
             filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"Brannan"];
         } break;
         case 3: {
-            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"curves02"];
+            filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"curve02"];
         } break;
         case 4: {
             filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"Tailfins"];
