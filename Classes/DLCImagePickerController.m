@@ -426,7 +426,7 @@
             blurFilter = [[GPUImageGaussianSelectiveBlurFilter alloc] init];
             [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setExcludeCircleRadius:80.0/320.0];
             [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setExcludeCirclePoint:CGPointMake(0.5f, 0.5f)];
-            [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setBlurSize:kStaticBlurSize];
+            [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setExcludeBlurSize:kStaticBlurSize];
             [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setAspectRatio:1.0f];
         }
         hasBlur = YES;
@@ -566,20 +566,20 @@
         
         if ([sender state] == UIGestureRecognizerStateBegan) {
             [self showBlurOverlay:YES];
-            [gpu setBlurSize:0.0f];
+            [gpu setExcludeBlurSize:0.0f];
             if (isStatic) {
                 [staticPicture processImage];
             }
         }
         
         if ([sender state] == UIGestureRecognizerStateBegan || [sender state] == UIGestureRecognizerStateChanged) {
-            [gpu setBlurSize:0.0f];
+            [gpu setExcludeBlurSize:0.0f];
             [self.blurOverlayView setCircleCenter:tapPoint];
             [gpu setExcludeCirclePoint:CGPointMake(tapPoint.x/320.0f, tapPoint.y/320.0f)];
         }
         
         if([sender state] == UIGestureRecognizerStateEnded){
-            [gpu setBlurSize:kStaticBlurSize];
+            [gpu setExcludeBlurSize:kStaticBlurSize];
             [self showBlurOverlay:NO];
             if (isStatic) {
                 [staticPicture processImage];
@@ -633,14 +633,14 @@
         
         if ([sender state] == UIGestureRecognizerStateBegan) {
             [self showBlurOverlay:YES];
-            [gpu setBlurSize:0.0f];
+            [gpu setExcludeBlurSize:0.0f];
             if (isStatic) {
                 [staticPicture processImage];
             }
         }
         
         if ([sender state] == UIGestureRecognizerStateBegan || [sender state] == UIGestureRecognizerStateChanged) {
-            [gpu setBlurSize:0.0f];
+            [gpu setExcludeBlurSize:0.0f];
             [gpu setExcludeCirclePoint:CGPointMake(midpoint.x/320.0f, midpoint.y/320.0f)];
             self.blurOverlayView.circleCenter = CGPointMake(midpoint.x, midpoint.y);
             CGFloat radius = MAX(MIN(sender.scale*[gpu excludeCircleRadius], 0.6f), 0.15f);
@@ -650,7 +650,7 @@
         }
         
         if ([sender state] == UIGestureRecognizerStateEnded) {
-            [gpu setBlurSize:kStaticBlurSize];
+            [gpu setExcludeBlurSize:kStaticBlurSize];
             [self showBlurOverlay:NO];
             if (isStatic) {
                 [staticPicture processImage];
