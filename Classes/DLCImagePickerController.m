@@ -9,7 +9,7 @@
 #import "DLCImagePickerController.h"
 #import "GrayscaleContrastFilter.h"
 
-#define kStaticBlurSize 2.0f
+#define kStaticBlurSize 30.0/320.0
 #define NUMBER_OF_FILTERS 10
 
 @interface DLCImagePickerController ()
@@ -424,10 +424,23 @@
     } else {
         if (!blurFilter) {
             blurFilter = [[GPUImageGaussianSelectiveBlurFilter alloc] init];
+            
+            /*
+             
+             DEFAULT:
+             self.blurRadiusInPixels = 5.0;
+             
+             self.excludeCircleRadius = 60.0/320.0;
+             self.excludeCirclePoint = CGPointMake(0.5f, 0.5f);
+             self.excludeBlurSize = 30.0/320.0;
+             
+             */
+            [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setBlurRadiusInPixels:5];
             [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setExcludeCircleRadius:80.0/320.0];
             [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setExcludeCirclePoint:CGPointMake(0.5f, 0.5f)];
             [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setExcludeBlurSize:kStaticBlurSize];
             [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setAspectRatio:1.0f];
+            
         }
         hasBlur = YES;
         [self.blurToggleButton setSelected:YES];
