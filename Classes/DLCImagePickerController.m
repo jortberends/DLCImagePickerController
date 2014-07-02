@@ -235,6 +235,7 @@
         stillCamera = [[GPUImageStillCamera alloc] initWithSessionPreset:AVCaptureSessionPresetPhoto cameraPosition:AVCaptureDevicePositionBack];
                 
         stillCamera.outputImageOrientation = UIInterfaceOrientationPortrait;
+        [stillCamera setHorizontallyMirrorFrontFacingCamera:YES];
         runOnMainQueueWithoutDeadlocking(^{
             [stillCamera startCameraCapture];
             if([stillCamera.inputCamera hasTorch]){
