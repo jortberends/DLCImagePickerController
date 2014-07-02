@@ -9,7 +9,7 @@
 #import "DLCImagePickerController.h"
 #import "GrayscaleContrastFilter.h"
 
-#define kStaticBlurSize 2.0f
+#define kStaticBlurSize 30.0/320.0
 #define NUMBER_OF_FILTERS 10
 
 @interface DLCImagePickerController ()
@@ -424,10 +424,23 @@
     } else {
         if (!blurFilter) {
             blurFilter = [[GPUImageGaussianSelectiveBlurFilter alloc] init];
+            
+            /*
+             
+             DEFAULT:
+             self.blurRadiusInPixels = 5.0;
+             
+             self.excludeCircleRadius = 60.0/320.0;
+             self.excludeCirclePoint = CGPointMake(0.5f, 0.5f);
+             self.excludeBlurSize = 30.0/320.0;
+             
+             */
+            [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setBlurRadiusInPixels:5];
             [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setExcludeCircleRadius:80.0/320.0];
             [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setExcludeCirclePoint:CGPointMake(0.5f, 0.5f)];
-            [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setBlurSize:kStaticBlurSize];
+            [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setExcludeBlurSize:kStaticBlurSize];
             [(GPUImageGaussianSelectiveBlurFilter*)blurFilter setAspectRatio:1.0f];
+            
         }
         hasBlur = YES;
         [self.blurToggleButton setSelected:YES];
@@ -566,20 +579,20 @@
         
         if ([sender state] == UIGestureRecognizerStateBegan) {
             [self showBlurOverlay:YES];
-            [gpu setBlurSize:0.0f];
+            [gpu setExcludeBlurSize:0.0f];
             if (isStatic) {
                 [staticPicture processImage];
             }
         }
         
         if ([sender state] == UIGestureRecognizerStateBegan || [sender state] == UIGestureRecognizerStateChanged) {
-            [gpu setBlurSize:0.0f];
+            [gpu setExcludeBlurSize:0.0f];
             [self.blurOverlayView setCircleCenter:tapPoint];
             [gpu setExcludeCirclePoint:CGPointMake(tapPoint.x/320.0f, tapPoint.y/320.0f)];
         }
         
         if([sender state] == UIGestureRecognizerStateEnded){
-            [gpu setBlurSize:kStaticBlurSize];
+            [gpu setExcludeBlurSize:kStaticBlurSize];
             [self showBlurOverlay:NO];
             if (isStatic) {
                 [staticPicture processImage];
@@ -633,14 +646,14 @@
         
         if ([sender state] == UIGestureRecognizerStateBegan) {
             [self showBlurOverlay:YES];
-            [gpu setBlurSize:0.0f];
+            [gpu setExcludeBlurSize:0.0f];
             if (isStatic) {
                 [staticPicture processImage];
             }
         }
         
         if ([sender state] == UIGestureRecognizerStateBegan || [sender state] == UIGestureRecognizerStateChanged) {
-            [gpu setBlurSize:0.0f];
+            [gpu setExcludeBlurSize:0.0f];
             [gpu setExcludeCirclePoint:CGPointMake(midpoint.x/320.0f, midpoint.y/320.0f)];
             self.blurOverlayView.circleCenter = CGPointMake(midpoint.x, midpoint.y);
             CGFloat radius = MAX(MIN(sender.scale*[gpu excludeCircleRadius], 0.6f), 0.15f);
@@ -650,7 +663,7 @@
         }
         
         if ([sender state] == UIGestureRecognizerStateEnded) {
-            [gpu setBlurSize:kStaticBlurSize];
+            [gpu setExcludeBlurSize:kStaticBlurSize];
             [self showBlurOverlay:NO];
             if (isStatic) {
                 [staticPicture processImage];
