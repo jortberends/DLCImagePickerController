@@ -335,7 +335,8 @@
         [filter addTarget:self.imageView];
     }
     
-    [filter prepareForImageCapture];
+//    [filter prepareForImageCapture];
+    [filter prepareForInterfaceBuilder];
     
 }
 
@@ -482,7 +483,7 @@
 
 
 -(void)captureImage {
-    UIImage *img = [cropFilter imageFromCurrentlyProcessedOutput];
+    UIImage *img = [cropFilter imageFromCurrentFramebuffer];
     [stillCamera.inputCamera unlockForConfiguration];
     [stillCamera stopCameraCapture];
     [self removeAllTargets];
@@ -531,7 +532,7 @@
         
         [staticPicture processImage];
         
-        UIImage *currentFilteredVideoFrame = [processUpTo imageFromCurrentlyProcessedOutputWithOrientation:staticPictureOriginalOrientation];
+        UIImage *currentFilteredVideoFrame = [processUpTo imageFromCurrentFramebufferWithOrientation:staticPictureOriginalOrientation];
 
         NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:
                               UIImageJPEGRepresentation(currentFilteredVideoFrame, self.outputJPEGQuality), @"data", nil];
