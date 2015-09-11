@@ -7,7 +7,7 @@
 //
 
 #import "DLCImagePickerController.h"
-#import "GrayscaleContrastFilter.h"
+#import "DLCGrayscaleContrastFilter.h"
 
 #define kStaticBlurSize 30.0/320.0
 #define NUMBER_OF_FILTERS 10
@@ -302,7 +302,7 @@
             filter = [[GPUImageToneCurveFilter alloc] initWithACV:@"X-PRO_II"];            
         } break;
         case 9: {
-                filter = [[GrayscaleContrastFilter alloc] init];
+                filter = [[DLCGrayscaleContrastFilter alloc] init];
         } break;
         default:
             filter = [[GPUImageFilter alloc] init];
@@ -335,8 +335,7 @@
         [filter addTarget:self.imageView];
     }
     
-//    [filter prepareForImageCapture];
-    [filter prepareForInterfaceBuilder];
+    [filter prepareForImageCapture];
     
 }
 
@@ -483,7 +482,7 @@
 
 
 -(void)captureImage {
-    UIImage *img = [cropFilter imageFromCurrentFramebuffer];
+    UIImage *img = [cropFilter imageFromCurrentlyProcessedOutput];
     [stillCamera.inputCamera unlockForConfiguration];
     [stillCamera stopCameraCapture];
     [self removeAllTargets];
@@ -532,7 +531,7 @@
         
         [staticPicture processImage];
         
-        UIImage *currentFilteredVideoFrame = [processUpTo imageFromCurrentFramebufferWithOrientation:staticPictureOriginalOrientation];
+        UIImage *currentFilteredVideoFrame = [processUpTo imageFromCurrentlyProcessedOutputWithOrientation:staticPictureOriginalOrientation];
 
         NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:
                               UIImageJPEGRepresentation(currentFilteredVideoFrame, self.outputJPEGQuality), @"data", nil];
